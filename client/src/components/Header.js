@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import Payments from './Payments';
 
 class Header extends Component {
   renderContent() {
@@ -14,11 +17,17 @@ class Header extends Component {
           </li>
         );
       default:
-        return (
-          <li>
+        return [
+          <li key="1">
+            <Payments />
+          </li>,
+          <li key="3" style={{ margin: '0px 10px' }}>
+            Credits: {this.props.auth.credits}
+          </li>,
+          <li key="2">
             <a href="/api/logout">Logout</a>
           </li>
-        );
+        ];
     }
   }
 
@@ -32,16 +41,16 @@ class Header extends Component {
           >
             Emaily
           </Link>
-          <ul className="right">
-            <li>
-              <a>{this.renderContent()}</a>
-            </li>
-          </ul>
+          <ul className="right">{this.renderContent()}</ul>
         </div>
       </nav>
     );
   }
 }
+
+Header.propTypes = {
+  auth: PropTypes.oneOfType([PropTypes.object, PropTypes.bool])
+};
 
 function mapStateToProps({ auth }) {
   return { auth };
